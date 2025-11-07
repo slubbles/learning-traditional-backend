@@ -29,7 +29,8 @@ export interface AuthResponse {
     role: string;
     avatar?: string;
   };
-  token: string;
+  token?: string;
+  requiresVerification?: boolean;
 }
 
 /**

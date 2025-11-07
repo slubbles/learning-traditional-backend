@@ -26,6 +26,25 @@ import { useProjectsStore } from '@/store/projects';
 import { getProjects, createProject } from '@/lib/api/projects';
 import { useAuthStore } from '@/store/auth';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
+
+const stagger = {
+  visible: {
+    transition: {
+      staggerChildren: 0.08
+    }
+  }
+};
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1 }
+};
 
 export default function ProjectsPage() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -83,12 +102,17 @@ export default function ProjectsPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
         <Navbar />
 
         <main className="container mx-auto p-6">
           {/* Header */}
-          <div className="mb-8 flex items-center justify-between">
+          <motion.div
+            className="mb-8 flex items-center justify-between"
+            initial="hidden"
+            animate="visible"
+            variants={fadeInUp}
+          >
             <div>
               <h1 className="mb-2 text-3xl font-bold">Projects</h1>
               <p className="text-gray-600">Manage your team's projects</p>
@@ -97,7 +121,27 @@ export default function ProjectsPage() {
             {canCreateProject && (
               <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
                 <DialogTrigger asChild>
-                  <Button>Create Project</Button>
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Button className="gap-2">
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                      Create Project
+                    </Button>
+                  </motion.div>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
@@ -178,85 +222,214 @@ export default function ProjectsPage() {
                 </DialogContent>
               </Dialog>
             )}
-          </div>
+          </motion.div>
 
           {/* Projects List */}
           {storeLoading ? (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <motion.div
+              className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+              initial="hidden"
+              animate="visible"
+              variants={stagger}
+            >
               {[...Array(6)].map((_, i) => (
-                <Card key={i}>
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <Skeleton className="h-6 w-40" />
-                      <Skeleton className="h-5 w-16" />
-                    </div>
-                    <Skeleton className="mt-2 h-4 w-full" />
-                    <Skeleton className="h-4 w-2/3" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <Skeleton className="h-4 w-32" />
-                      <Skeleton className="h-4 w-24" />
-                      <Skeleton className="h-4 w-36" />
-                    </div>
-                    <Skeleton className="mt-4 h-10 w-full" />
-                  </CardContent>
-                </Card>
+                <motion.div key={i} variants={scaleIn}>
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <Skeleton className="h-6 w-40" />
+                        <Skeleton className="h-5 w-16" />
+                      </div>
+                      <Skeleton className="mt-2 h-4 w-full" />
+                      <Skeleton className="h-4 w-2/3" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="h-4 w-36" />
+                      </div>
+                      <Skeleton className="mt-4 h-10 w-full" />
+                    </CardContent>
+                  </Card>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : projects.length === 0 ? (
-            <Card>
-              <CardContent className="flex min-h-[200px] items-center justify-center">
-                <div className="text-center">
-                  <p className="mb-4 text-gray-500">No projects yet</p>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUp}
+            >
+              <Card className="border-2 border-dashed border-gray-300">
+                <CardContent className="flex min-h-[300px] flex-col items-center justify-center">
+                  <motion.div
+                    className="mb-4 rounded-full bg-gray-100 p-4"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+                  >
+                    <svg
+                      className="h-12 w-12 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
+                      />
+                    </svg>
+                  </motion.div>
+                  <p className="mb-4 text-lg font-medium text-gray-700">No projects yet</p>
+                  <p className="mb-6 text-sm text-gray-500">Get started by creating your first project</p>
                   {canCreateProject && (
-                    <Button onClick={() => setIsCreateOpen(true)}>
-                      Create Your First Project
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project) => (
-                <Card key={project.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <CardTitle>{project.name}</CardTitle>
-                      <Badge
-                        variant={
-                          project.status === 'ACTIVE'
-                            ? 'default'
-                            : project.status === 'COMPLETED'
-                            ? 'secondary'
-                            : 'outline'
-                        }
-                      >
-                        {project.status}
-                      </Badge>
-                    </div>
-                    <CardDescription>
-                      {project.description || 'No description'}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 text-sm text-gray-600">
-                      <p>Owner: {project.owner.name}</p>
-                      <p>Tasks: {project._count?.tasks || 0}</p>
-                      <p>
-                        Created: {new Date(project.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="mt-4">
-                      <Button variant="outline" className="w-full">
-                        View Details
+                    <motion.div
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Button onClick={() => setIsCreateOpen(true)} className="gap-2">
+                        <svg
+                          className="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 4v16m8-8H4"
+                          />
+                        </svg>
+                        Create Your First Project
                       </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </motion.div>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+          ) : (
+            <motion.div
+              className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+              initial="hidden"
+              animate="visible"
+              variants={stagger}
+            >
+              {projects.map((project) => (
+                <motion.div key={project.id} variants={scaleIn}>
+                  <Card className="overflow-hidden transition-all hover:shadow-xl">
+                    <motion.div
+                      whileHover={{ y: -4 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
+                        <div className="flex items-start justify-between">
+                          <CardTitle className="text-lg">{project.name}</CardTitle>
+                          <Badge
+                            variant={
+                              project.status === 'ACTIVE'
+                                ? 'default'
+                                : project.status === 'COMPLETED'
+                                ? 'secondary'
+                                : 'outline'
+                            }
+                          >
+                            {project.status}
+                          </Badge>
+                        </div>
+                        <CardDescription>
+                          {project.description || 'No description'}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-4">
+                        <div className="space-y-3 text-sm">
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <svg
+                              className="h-4 w-4 text-blue-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                              />
+                            </svg>
+                            <span className="font-medium">{project.owner.name}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <svg
+                              className="h-4 w-4 text-purple-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                              />
+                            </svg>
+                            <span>{project._count?.tasks || 0} tasks</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <svg
+                              className="h-4 w-4 text-green-600"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              />
+                            </svg>
+                            <span>{new Date(project.createdAt).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                        <div className="mt-6">
+                          <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            <Button variant="outline" className="w-full gap-2">
+                              <svg
+                                className="h-4 w-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                />
+                              </svg>
+                              View Details
+                            </Button>
+                          </motion.div>
+                        </div>
+                      </CardContent>
+                    </motion.div>
+                  </Card>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
         </main>
       </div>

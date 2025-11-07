@@ -5,9 +5,11 @@
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { validationResult } = require('express-validator');
 const prisma = require('../config/database');
 const logger = require('../utils/logger');
+const { sendVerificationEmail, sendWelcomeEmail } = require('../services/email.service');
 
 /**
  * REGISTER NEW USER
@@ -40,38 +42,48 @@ const register = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     // 10 = salt rounds (higher = more secure but slower)
 
-    // 4. Create user in database
+    // 4. Generate verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+    // 5. Create user in database
     const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
         name,
-        role: 'MEMBER'  // Default role
+        role: 'MEMBER',  // Default role
+        emailVerified: false,  // Not verified yet
+        verificationToken,
+        verificationTokenExpiry
       },
       select: {
         id: true,
         email: true,
         name: true,
         role: true,
+        emailVerified: true,
         createdAt: true
-        // Don't return password!
+        // Don't return password or tokens!
       }
     });
 
-    // 5. Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },  // Payload (data stored in token)
-      process.env.JWT_SECRET,                  // Secret key
-      { expiresIn: process.env.JWT_EXPIRES_IN } // Token expires in 7 days
-    );
+    // 6. Send verification email
+    try {
+      await sendVerificationEmail(email, name, verificationToken);
+      logger.info(`Verification email sent to ${email}`);
+    } catch (emailError) {
+      logger.error('Failed to send verification email:', emailError);
+      // Don't fail registration if email fails - user can request new email later
+    }
 
-    logger.info(`New user registered: ${email}`);
+    logger.info(`New user registered: ${email} (email verification required)`);
 
-    // 6. Send response
+    // 7. Send response (NO TOKEN - must verify email first)
     res.status(201).json({
-      message: 'User registered successfully',
+      message: 'Registration successful! Please check your email to verify your account.',
       user,
-      token
+      requiresVerification: true
     });
 
   } catch (error) {
@@ -104,9 +116,18 @@ const login = async (req, res, next) => {
       });
     }
 
-    // 3. Compare passwords
+    // 3. Check if email is verified
+    if (!user.emailVerified && user.provider !== 'github') {
+      // OAuth users are auto-verified, but email/password users must verify
+      return res.status(403).json({ 
+        error: 'Please verify your email before logging in. Check your inbox for the verification link.',
+        requiresVerification: true
+      });
+    }
+
+    // 4. Compare passwords
     // bcrypt.compare hashes the input and compares with stored hash
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password || '');
 
     if (!isPasswordValid) {
       return res.status(401).json({ 
@@ -114,7 +135,7 @@ const login = async (req, res, next) => {
       });
     }
 
-    // 4. Generate token
+    // 5. Generate token
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET,
@@ -123,8 +144,8 @@ const login = async (req, res, next) => {
 
     logger.info(`User logged in: ${email}`);
 
-    // 5. Send response (without password)
-    const { password: _, ...userWithoutPassword } = user;
+    // 6. Send response (without password)
+    const { password: _, verificationToken: __, verificationTokenExpiry: ___, ...userWithoutPassword } = user;
     
     res.json({
       message: 'Login successful',
@@ -203,9 +224,79 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
+/**
+ * VERIFY EMAIL
+ * GET /api/auth/verify-email/:token
+ */
+const verifyEmail = async (req, res, next) => {
+  try {
+    const { token } = req.params;
+
+    // 1. Find user with this verification token
+    const user = await prisma.user.findFirst({
+      where: {
+        verificationToken: token,
+        verificationTokenExpiry: {
+          gt: new Date() // Token must not be expired
+        }
+      }
+    });
+
+    if (!user) {
+      return res.status(400).json({ 
+        error: 'Invalid or expired verification token. Please request a new verification email.' 
+      });
+    }
+
+    // 2. Mark user as verified and clear token
+    const verifiedUser = await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        emailVerified: true,
+        verificationToken: null,
+        verificationTokenExpiry: null
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        emailVerified: true
+      }
+    });
+
+    // 3. Send welcome email
+    try {
+      await sendWelcomeEmail(verifiedUser.email, verifiedUser.name);
+    } catch (emailError) {
+      logger.error('Failed to send welcome email:', emailError);
+      // Don't fail verification if welcome email fails
+    }
+
+    // 4. Generate JWT token so user can login immediately
+    const jwtToken = jwt.sign(
+      { userId: verifiedUser.id, email: verifiedUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    logger.info(`Email verified for user: ${verifiedUser.email}`);
+
+    res.json({
+      message: 'Email verified successfully! You can now login.',
+      user: verifiedUser,
+      token: jwtToken // Auto-login after verification
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
-  updateProfile
+  updateProfile,
+  verifyEmail
 };

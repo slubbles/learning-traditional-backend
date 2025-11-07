@@ -59,4 +59,7 @@ router.get('/me', authenticate, authController.getProfile);
 // PUT /api/auth/profile - Update profile (protected route)
 router.put('/profile', authenticate, authController.updateProfile);
 
+// GET /api/auth/verify-email/:token - Verify email address (public)
+router.get('/verify-email/:token', authController.verifyEmail);
+
 module.exports = router;

@@ -11,9 +11,11 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const passport = require('./config/passport');
 
 // Import routes (we'll create these next)
 const authRoutes = require('./routes/auth.routes');
+const oauthRoutes = require('./routes/oauth.routes');
 const userRoutes = require('./routes/user.routes');
 const projectRoutes = require('./routes/project.routes');
 const taskRoutes = require('./routes/task.routes');
@@ -41,8 +43,14 @@ app.use(helmet());
 // 2. CORS - Allow frontend to access this API
 //    Without this, browsers block requests from different origins
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-  credentials: true  // Allow cookies
+  origin: [
+    process.env.CORS_ORIGIN || 'http://localhost:3000',
+    'https://laughing-orbit-5pqj6q5wx7whqr4-3000.app.github.dev',
+    /\.app\.github\.dev$/ // Allow all Codespace URLs
+  ],
+  credentials: true,  // Allow cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // 3. BODY PARSERS - Convert request body to JavaScript objects
@@ -54,6 +62,9 @@ app.use(express.urlencoded({ extended: true }));  // For form submissions
 //    Logs every request (GET /api/users, POST /api/login, etc.)
 //    'dev' format shows: METHOD URL STATUS RESPONSE_TIME
 app.use(morgan('dev'));
+
+// 5. PASSPORT - Initialize OAuth authentication
+app.use(passport.initialize());
 
 // ========================================
 // ROUTES
@@ -72,6 +83,7 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/auth', authRoutes);      // Authentication: /api/auth/login, /api/auth/register
+app.use('/api/auth', oauthRoutes);     // OAuth: /api/auth/github, /api/auth/github/callback
 app.use('/api/users', userRoutes);     // User management: /api/users/profile, etc.
 app.use('/api/projects', projectRoutes); // Projects: /api/projects, /api/projects/:id
 app.use('/api/tasks', taskRoutes);     // Tasks: /api/tasks, /api/tasks/:id

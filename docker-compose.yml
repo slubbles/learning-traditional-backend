@@ -101,7 +101,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:5000/api
+      - NEXT_PUBLIC_API_URL=https://laughing-orbit-5pqj6q5wx7whqr4-5000.app.github.dev/api
     volumes:
       - ./frontend:/app
       - /app/node_modules

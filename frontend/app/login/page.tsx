@@ -5,8 +5,8 @@
 
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,6 +18,7 @@ import { toast } from 'sonner';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const setAuth = useAuthStore((state) => state.setAuth);
   
   const [formData, setFormData] = useState({
@@ -25,6 +26,46 @@ export default function LoginPage() {
     password: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  // Handle OAuth error messages
+  useEffect(() => {
+    const error = searchParams.get('error');
+    if (error) {
+      let errorMessage = 'Authentication failed';
+      let errorDescription = 'Please try again';
+
+      switch (error) {
+        case 'no_email_from_github':
+          errorMessage = 'GitHub Email Not Found';
+          errorDescription = 'Your GitHub account must have a public email address. Please update your GitHub profile settings and try again.';
+          break;
+        case 'email_already_exists':
+          errorMessage = 'Account Already Exists';
+          errorDescription = 'An account with this email already exists. Please login with your email and password, or contact support to link your GitHub account.';
+          break;
+        case 'oauth_failed':
+          errorMessage = 'GitHub Authentication Failed';
+          errorDescription = 'Unable to authenticate with GitHub. Please try again or use email login.';
+          break;
+        case 'oauth_no_user':
+          errorMessage = 'User Creation Failed';
+          errorDescription = 'We could not create your account. Please try again or use email registration.';
+          break;
+        case 'token_generation_failed':
+          errorMessage = 'Session Error';
+          errorDescription = 'Failed to create your session. Please try logging in again.';
+          break;
+      }
+
+      toast.error(errorMessage, {
+        description: errorDescription,
+        duration: 6000,
+      });
+
+      // Clear error from URL
+      router.replace('/login');
+    }
+  }, [searchParams, router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({

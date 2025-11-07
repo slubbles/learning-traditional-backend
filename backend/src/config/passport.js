@@ -69,6 +69,8 @@ passport.use(
 
         if (user) {
           // User exists - update OAuth info if needed
+          console.log(`[OAuth] Existing user found: ${email}, linking GitHub account`);
+          
           if (!user.provider || !user.providerId) {
             user = await prisma.user.update({
               where: { id: user.id },
@@ -88,8 +90,10 @@ passport.use(
               }
             });
           }
+          console.log(`[OAuth] User logged in successfully: ${email}`);
         } else {
           // New user - create account
+          console.log(`[OAuth] Creating new user: ${email}`);
           user = await prisma.user.create({
             data: {
               email,
@@ -114,6 +118,12 @@ passport.use(
 
         return done(null, user);
       } catch (error) {
+        console.error('[OAuth] Error during GitHub authentication:', error);
+        console.error('[OAuth] Error details:', {
+          message: error.message,
+          code: error.code,
+          email: profile?.emails?.[0]?.value
+        });
         return done(error, null);
       }
     }

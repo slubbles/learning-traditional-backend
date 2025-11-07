@@ -75,15 +75,18 @@ export default function RegisterPage() {
         }, 2000);
       } else {
         // Old flow for OAuth or if verification is disabled
-        setAuth(response.user, response.token);
-        
-        toast.success('Account Created!', {
-          description: `Welcome to TaskFlow, ${response.user.name}!`,
-        });
-        
-        router.push('/dashboard');
+        if (response.token) {
+          setAuth(response.user, response.token);
+          
+          toast.success('Account Created!', {
+            description: `Welcome to TaskFlow, ${response.user.name}!`,
+          });
+          
+          router.push('/dashboard');
+        } else {
+          throw new Error('No token received from server');
+        }
       }
-      router.push('/dashboard');
       
     } catch (err: any) {
       const errorMessage = err.response?.data?.error || 'Registration failed. Please try again.';

@@ -39,13 +39,18 @@ export default function LoginPage() {
 
     try {
       const response = await login(formData);
-      setAuth(response.user, response.token);
       
-      toast.success('Welcome back!', {
-        description: `Logged in as ${response.user.name}`,
-      });
-      
-      router.push('/dashboard');
+      if (response.token) {
+        setAuth(response.user, response.token);
+        
+        toast.success('Welcome back!', {
+          description: `Logged in as ${response.user.name}`,
+        });
+        
+        router.push('/dashboard');
+      } else {
+        throw new Error('No token received from server');
+      }
       
     } catch (err: any) {
       const errorMessage = err.response?.data?.error || 'Login failed. Please try again.';

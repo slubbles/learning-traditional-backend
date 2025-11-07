@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TaskFlow - Enterprise Task Management",
-  description: "Streamline your team's workflow with enterprise-grade task management",
+  title: "TaskFlow - Modern Task Management Platform",
+  description: "Streamline your team's workflow with TaskFlow - a modern, full-stack task management platform with GitHub OAuth, email verification, and beautiful animations.",
 };
 
 export default function RootLayout({

@@ -1,6 +1,9 @@
-# 🚀 Enterprise Task Management Platform
+# TaskFlow 🚀
 
-A full-stack task management and team collaboration platform built with modern technologies. This project demonstrates enterprise-level backend development practices, from authentication to database design.
+A modern, full-stack task management and team collaboration platform built with cutting-edge technologies. TaskFlow demonstrates enterprise-level development practices with GitHub OAuth, email verification, beautiful animations, and comprehensive API design.
+
+**Live Demo:** [Coming Soon]
+**Repository:** https://github.com/slubbles/task-flow
 
 ## 📋 Table of Contents
 

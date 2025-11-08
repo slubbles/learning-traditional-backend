@@ -336,15 +336,15 @@ export default function TasksPage() {
                     <div className="space-y-2">
                       <Label htmlFor="assignee">Assign To (Optional)</Label>
                       <Select
-                        value={newTask.assigneeId}
-                        onValueChange={(value) => setNewTask({ ...newTask, assigneeId: value })}
+                        value={newTask.assigneeId || "UNASSIGNED"}
+                        onValueChange={(value) => setNewTask({ ...newTask, assigneeId: value === "UNASSIGNED" ? '' : value })}
                         disabled={isCreating}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select a team member" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">Unassigned</SelectItem>
+                          <SelectItem value="UNASSIGNED">Unassigned</SelectItem>
                           {users.map((usr) => (
                             <SelectItem key={usr.id} value={usr.id}>
                               {usr.name} {usr.id === user?.id ? '(You)' : ''} - {usr.role}

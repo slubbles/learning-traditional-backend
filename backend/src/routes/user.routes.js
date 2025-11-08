@@ -11,9 +11,9 @@ const router = express.Router();
 
 /**
  * GET /api/users - Get all users
- * Only ADMIN and MANAGER can access
+ * All authenticated users can access (for task assignment)
  */
-router.get('/', authenticate, authorize('ADMIN', 'MANAGER'), async (req, res, next) => {
+router.get('/', authenticate, async (req, res, next) => {
   try {
     const users = await prisma.user.findMany({
       select: {

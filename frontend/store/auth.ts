@@ -81,9 +81,16 @@ export const useAuthStore = create<AuthState>()(
 
       // Update user info
       updateUser: (userData) =>
-        set((state) => ({
-          user: state.user ? { ...state.user, ...userData } : null,
-        })),
+        set((state) => {
+          const updatedUser = state.user ? { ...state.user, ...userData } : null;
+          // Also update localStorage
+          if (updatedUser) {
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+          }
+          return {
+            user: updatedUser,
+          };
+        }),
     }),
     {
       name: 'auth-storage', // localStorage key

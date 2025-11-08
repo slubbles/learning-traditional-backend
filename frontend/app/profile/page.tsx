@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -71,7 +72,7 @@ export default function ProfilePage() {
 
     setIsLoadingProfile(true);
     try {
-      const response = await apiClient.put("/api/auth/profile", {
+      const response = await apiClient.put("/auth/profile", {
         name: profileData.name,
       });
       
@@ -105,7 +106,7 @@ export default function ProfilePage() {
 
     setIsLoadingPassword(true);
     try {
-      await apiClient.put("/api/auth/change-password", {
+      await apiClient.put("/auth/change-password", {
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
       });
@@ -140,6 +141,7 @@ export default function ProfilePage() {
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <Navbar />
         <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div

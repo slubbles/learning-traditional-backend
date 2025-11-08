@@ -31,7 +31,21 @@ export default function RootLayout({
       >
         <ErrorBoundary>
           {children}
-          <Toaster position="top-right" richColors />
+          <Toaster 
+            position="top-right" 
+            richColors 
+            expand={true}
+            duration={4000}
+            closeButton
+            toastOptions={{
+              style: {
+                background: 'white',
+                border: '1px solid #e5e7eb',
+                padding: '16px',
+              },
+              className: 'text-sm font-medium',
+            }}
+          />
         </ErrorBoundary>
       </body>
     </html>

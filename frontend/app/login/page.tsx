@@ -109,21 +109,26 @@ function LoginContent() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1 pb-6">
           <div className="mb-2 flex justify-center">
-            <div className="rounded-full bg-blue-600 p-3">
-              <svg
-                className="h-6 w-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
+            <Link href="/" className="group">
+              <div className="flex items-center gap-2 transition-transform group-hover:scale-105">
+                <div className="rounded-full bg-blue-600 p-3">
+                  <svg
+                    className="h-6 w-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <span className="text-xl font-bold text-blue-600">TaskFlow</span>
+              </div>
+            </Link>
           </div>
           <CardTitle className="text-center text-xl sm:text-2xl">Welcome Back</CardTitle>
           <CardDescription className="text-center text-sm">

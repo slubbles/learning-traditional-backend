@@ -104,21 +104,26 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1 pb-6">
           <div className="mb-2 flex justify-center">
-            <div className="rounded-full bg-blue-600 p-3">
-              <svg
-                className="h-6 w-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                />
-              </svg>
-            </div>
+            <Link href="/" className="group">
+              <div className="flex items-center gap-2 transition-transform group-hover:scale-105">
+                <div className="rounded-full bg-blue-600 p-3">
+                  <svg
+                    className="h-6 w-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                    />
+                  </svg>
+                </div>
+                <span className="text-xl font-bold text-blue-600">TaskFlow</span>
+              </div>
+            </Link>
           </div>
           <CardTitle className="text-center text-xl sm:text-2xl">Create Account</CardTitle>
           <CardDescription className="text-center text-sm">

@@ -63,6 +63,9 @@ router.put('/profile', authenticate, authController.updateProfile);
 // PUT /api/auth/change-password - Change password (protected route)
 router.put('/change-password', authenticate, authController.changePassword);
 
+// POST /api/auth/refresh - Refresh JWT token (protected route)
+router.post('/refresh', authenticate, authController.refreshToken);
+
 // GET /api/auth/verify-email/:token - Verify email address (public)
 router.get('/verify-email/:token', authController.verifyEmail);
 

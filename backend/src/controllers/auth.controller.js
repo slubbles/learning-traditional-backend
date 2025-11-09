@@ -353,11 +353,51 @@ const changePassword = async (req, res, next) => {
   }
 };
 
+/**
+ * REFRESH TOKEN
+ * POST /api/auth/refresh
+ * Generate a new JWT token for authenticated users
+ */
+const refreshToken = async (req, res, next) => {
+  try {
+    // User is already authenticated by middleware
+    const user = req.user;
+
+    // Generate new JWT token
+    const token = jwt.sign(
+      { 
+        userId: user.id,
+        email: user.email,
+        role: user.role
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    logger.info(`Token refreshed for user: ${user.email}`);
+
+    res.json({
+      message: 'Token refreshed successfully',
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        avatar: user.avatar
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
   updateProfile,
   changePassword,
-  verifyEmail
+  verifyEmail,
+  refreshToken
 };

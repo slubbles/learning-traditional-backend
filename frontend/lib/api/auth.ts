@@ -68,3 +68,12 @@ export const updateProfile = async (data: { name?: string; avatar?: string }) =>
   const response = await apiClient.put('/auth/profile', data);
   return response.data;
 };
+
+/**
+ * REFRESH TOKEN
+ * POST /api/auth/refresh
+ */
+export const refreshToken = async (): Promise<AuthResponse> => {
+  const response = await apiClient.post('/auth/refresh');
+  return response.data;
+};

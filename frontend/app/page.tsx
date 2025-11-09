@@ -66,12 +66,12 @@ export default function Home() {
             >
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">TaskFlow</span>
             </motion.div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Link href="/login">
-                <Button variant="ghost">Sign In</Button>
+                <Button variant="ghost" size="sm" className="sm:size-default">Sign In</Button>
               </Link>
               <Link href="/register">
-                <Button>Get Started</Button>
+                <Button size="sm" className="sm:size-default">Get Started</Button>
               </Link>
             </div>
           </div>
@@ -84,7 +84,7 @@ export default function Home() {
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.blue.100),white)] opacity-20" />
         <div className="absolute inset-y-0 right-1/2 -z-10 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] bg-white shadow-xl shadow-blue-600/10 ring-1 ring-blue-50 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center" />
         
-        <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
           <motion.div
             className="mx-auto max-w-2xl text-center"
             initial="hidden"
@@ -98,7 +98,7 @@ export default function Home() {
             </motion.div>
             
             <motion.h1
-              className="mb-6 text-4xl font-bold tracking-tight text-foreground sm:text-6xl"
+              className="mb-6 text-3xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl"
               variants={fadeInUp}
             >
               Streamline Your Team's
@@ -113,7 +113,7 @@ export default function Home() {
             </motion.h1>
             
             <motion.p
-              className="mb-10 text-lg leading-8 text-muted-foreground"
+              className="mb-10 text-base sm:text-lg leading-7 sm:leading-8 text-muted-foreground px-4 sm:px-0"
               variants={fadeInUp}
             >
               Enterprise-grade task management platform designed for modern teams. 
@@ -121,7 +121,7 @@ export default function Home() {
             </motion.p>
             
             <motion.div
-              className="flex flex-col items-center justify-center gap-4 sm:flex-row"
+              className="flex flex-col items-center justify-center gap-3 sm:gap-4 px-4 sm:px-0 sm:flex-row"
               variants={fadeInUp}
             >
               <Link href="/register">
@@ -176,7 +176,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="bg-gray-50 py-24 sm:py-32">
+      <section className="bg-gray-50 py-16 sm:py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             className="mx-auto max-w-2xl text-center"

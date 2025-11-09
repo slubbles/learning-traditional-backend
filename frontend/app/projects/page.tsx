@@ -6,6 +6,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
@@ -48,6 +49,7 @@ const scaleIn = {
 };
 
 export default function ProjectsPage() {
+  const router = useRouter();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [newProject, setNewProject] = useState({ name: '', description: '' });
   const [isLoading, setIsLoading] = useState(false);
@@ -397,7 +399,7 @@ export default function ProjectsPage() {
                             <Button 
                               variant="outline" 
                               className="w-full gap-2"
-                              onClick={() => window.location.href = `/projects/${project.id}`}
+                              onClick={() => router.push(`/projects/${project.id}`)}
                             >
                               <svg
                                 className="h-4 w-4"

@@ -105,9 +105,9 @@ function LoginContent() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8 sm:px-6">
       <Card className="w-full max-w-md shadow-xl">
-        <CardHeader className="space-y-1">
+        <CardHeader className="space-y-1 pb-6">
           <div className="mb-2 flex justify-center">
             <div className="rounded-full bg-blue-600 p-3">
               <svg
@@ -125,15 +125,15 @@ function LoginContent() {
               </svg>
             </div>
           </div>
-          <CardTitle className="text-center text-2xl">Welcome Back</CardTitle>
-          <CardDescription className="text-center">
+          <CardTitle className="text-center text-xl sm:text-2xl">Welcome Back</CardTitle>
+          <CardDescription className="text-center text-sm">
             Enter your credentials to access your account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-sm font-medium">Email</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
@@ -152,10 +152,10 @@ function LoginContent() {
             
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-primary hover:underline"
+                  className="text-xs sm:text-sm text-primary hover:underline"
                   tabIndex={-1}
                 >
                   Forgot?

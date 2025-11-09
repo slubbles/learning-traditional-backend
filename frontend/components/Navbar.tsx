@@ -5,6 +5,7 @@
 
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
@@ -18,17 +19,23 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { LayoutDashboard, FolderKanban, ListTodo, LogOut, User } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, ListTodo, LogOut, User, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { user, logout } = useAuthStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     router.push('/');
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
   };
 
   // Get user initials for avatar
@@ -46,16 +53,16 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-md">
-      <div className="container mx-auto flex items-center justify-between px-6 py-4">
+      <div className="container mx-auto flex items-center justify-between px-4 py-4 sm:px-6">
         {/* Logo */}
         <Link 
           href="/dashboard" 
-          className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent transition-opacity hover:opacity-80"
+          className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent transition-opacity hover:opacity-80"
         >
           TaskFlow
         </Link>
 
-        {/* Navigation Links */}
+        {/* Desktop Navigation Links */}
         <nav className="hidden gap-1 md:flex">
           {navLinks.map(({ href, label, icon: Icon }) => {
             const isActive = pathname === href;
@@ -80,8 +87,23 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* User Menu */}
-        <div className="flex items-center gap-4">
+        {/* Right Side - User Menu + Mobile Toggle */}
+        <div className="flex items-center gap-2 sm:gap-4">
+          {/* Mobile Menu Toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="md:hidden"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </Button>
+
+          {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-11 w-11 rounded-full ring-2 ring-primary/10 transition-all hover:ring-primary/30">
@@ -122,6 +144,60 @@ export default function Navbar() {
           </DropdownMenu>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="border-t bg-background md:hidden"
+          >
+            <nav className="container mx-auto flex flex-col px-4 py-2">
+              {navLinks.map(({ href, label, icon: Icon }) => {
+                const isActive = pathname === href;
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={closeMobileMenu}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                    {label}
+                  </Link>
+                );
+              })}
+              <div className="my-2 border-t" />
+              <Link
+                href="/profile"
+                onClick={closeMobileMenu}
+                className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                <User className="h-5 w-5" />
+                Profile
+              </Link>
+              <button
+                onClick={() => {
+                  closeMobileMenu();
+                  handleLogout();
+                }}
+                className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-destructive hover:bg-destructive/10"
+              >
+                <LogOut className="h-5 w-5" />
+                Logout
+              </button>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

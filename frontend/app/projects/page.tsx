@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { FolderKanban, Plus, Sparkles } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -261,49 +262,40 @@ export default function ProjectsPage() {
               animate="visible"
               variants={fadeInUp}
             >
-              <Card className="border-2 border-dashed border-gray-300">
+              <Card className="border-2 border-dashed border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/30">
                 <CardContent className="flex min-h-[300px] flex-col items-center justify-center">
                   <motion.div
-                    className="mb-4 rounded-full bg-gray-100 p-4"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                    className="mb-6 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 p-6"
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
                     transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
                   >
-                    <svg
-                      className="h-12 w-12 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-                      />
-                    </svg>
+                    <FolderKanban className="h-12 w-12 text-primary" />
                   </motion.div>
-                  <p className="mb-4 text-lg font-medium text-gray-700">No projects yet</p>
-                  <p className="mb-6 text-sm text-gray-500">Get started by creating your first project</p>
+                  <motion.p 
+                    className="mb-2 text-xl font-semibold text-foreground"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    Time to kickstart something new!
+                  </motion.p>
+                  <motion.p 
+                    className="mb-8 text-center text-sm text-muted-foreground max-w-sm"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    Create your first project and start organizing your work into manageable pieces
+                  </motion.p>
                   {canCreateProject && (
                     <motion.div
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
                     >
-                      <Button onClick={() => setIsCreateOpen(true)} className="gap-2">
-                        <svg
-                          className="h-4 w-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 4v16m8-8H4"
-                          />
-                        </svg>
+                      <Button size="lg" onClick={() => setIsCreateOpen(true)} className="gap-2">
+                        <Plus className="h-5 w-5" />
                         Create Your First Project
                       </Button>
                     </motion.div>
@@ -320,7 +312,7 @@ export default function ProjectsPage() {
             >
               {projects.map((project) => (
                 <motion.div key={project.id} variants={scaleIn}>
-                  <Card className="overflow-hidden transition-all hover:shadow-xl">
+                  <Card className="overflow-hidden shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                     <motion.div
                       whileHover={{ y: -4 }}
                       transition={{ duration: 0.2 }}

@@ -110,7 +110,7 @@ export default function DashboardPage() {
         >
           {/* Stats Cards */}
           <motion.div variants={scaleIn}>
-            <Card className="overflow-hidden border-l-4 border-l-blue-600 transition-all hover:shadow-lg">
+            <Card className="overflow-hidden border-l-4 border-l-blue-600 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium text-gray-600">Total Projects</CardTitle>
@@ -150,7 +150,7 @@ export default function DashboardPage() {
           </motion.div>
 
           <motion.div variants={scaleIn}>
-            <Card className="overflow-hidden border-l-4 border-l-green-600 transition-all hover:shadow-lg">
+            <Card className="overflow-hidden border-l-4 border-l-green-600 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium text-gray-600">Total Tasks</CardTitle>
@@ -190,7 +190,7 @@ export default function DashboardPage() {
           </motion.div>
 
           <motion.div variants={scaleIn}>
-            <Card className="overflow-hidden border-l-4 border-l-purple-600 transition-all hover:shadow-lg">
+            <Card className="overflow-hidden border-l-4 border-l-purple-600 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium text-gray-600">My Tasks</CardTitle>
@@ -231,7 +231,7 @@ export default function DashboardPage() {
 
           {/* Task Status Breakdown */}
           <motion.div variants={scaleIn}>
-            <Card className="overflow-hidden border-l-4 border-l-orange-600 transition-all hover:shadow-lg">
+            <Card className="overflow-hidden border-l-4 border-l-orange-600 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium text-gray-600">To Do</CardTitle>
@@ -270,7 +270,7 @@ export default function DashboardPage() {
           </motion.div>
 
           <motion.div variants={scaleIn}>
-            <Card className="overflow-hidden border-l-4 border-l-yellow-600 transition-all hover:shadow-lg">
+            <Card className="overflow-hidden border-l-4 border-l-yellow-600 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium text-gray-600">In Progress</CardTitle>
@@ -309,7 +309,7 @@ export default function DashboardPage() {
           </motion.div>
 
           <motion.div variants={scaleIn}>
-            <Card className="overflow-hidden border-l-4 border-l-emerald-600 transition-all hover:shadow-lg">
+            <Card className="overflow-hidden border-l-4 border-l-emerald-600 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-medium text-gray-600">Completed</CardTitle>
@@ -356,7 +356,7 @@ export default function DashboardPage() {
           variants={fadeInUp}
           transition={{ delay: 0.5 }}
         >
-          <Card className="border-2 border-dashed border-gray-200 bg-white/50 backdrop-blur transition-all hover:border-blue-300 hover:shadow-md">
+          <Card className="border-2 border-dashed border-gray-200 bg-white/50 shadow-sm backdrop-blur transition-all duration-300 hover:border-primary hover:shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <svg

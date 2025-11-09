@@ -45,7 +45,7 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Navigation Bar */}
       <motion.nav
         initial={{ y: -100 }}
@@ -53,8 +53,8 @@ export default function Home() {
         transition={{ duration: 0.5 }}
         className={`fixed top-0 z-50 w-full border-b transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-white/60'
-            : 'bg-white'
+            ? 'bg-background/80 shadow-sm backdrop-blur-md'
+            : 'bg-background/80 backdrop-blur-md'
         }`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -64,33 +64,14 @@ export default function Home() {
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 400 }}
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-                <svg
-                  className="h-5 w-5 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
-                </svg>
-              </div>
-              <span className="text-xl font-semibold text-gray-900">TaskFlow</span>
+              <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">TaskFlow</span>
             </motion.div>
             <div className="flex items-center gap-4">
               <Link href="/login">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button variant="ghost">Sign In</Button>
-                </motion.div>
+                <Button variant="ghost">Sign In</Button>
               </Link>
               <Link href="/register">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button>Get Started</Button>
-                </motion.div>
+                <Button>Get Started</Button>
               </Link>
             </div>
           </div>
@@ -117,12 +98,12 @@ export default function Home() {
             </motion.div>
             
             <motion.h1
-              className="mb-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl"
+              className="mb-6 text-4xl font-bold tracking-tight text-foreground sm:text-6xl"
               variants={fadeInUp}
             >
               Streamline Your Team's
               <motion.span
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
+                className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
@@ -132,7 +113,7 @@ export default function Home() {
             </motion.h1>
             
             <motion.p
-              className="mb-10 text-lg leading-8 text-gray-600"
+              className="mb-10 text-lg leading-8 text-muted-foreground"
               variants={fadeInUp}
             >
               Enterprise-grade task management platform designed for modern teams. 

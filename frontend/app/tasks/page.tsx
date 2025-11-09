@@ -23,6 +23,7 @@ import { useProjectsStore } from '@/store/projects';
 import { getProjects } from '@/lib/api/projects';
 import { getUsers, User } from '@/lib/api/users';
 import { toast } from 'sonner';
+import { ClipboardList, Search, Plus, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import TaskDetailModal from '@/components/TaskDetailModal';
 import type { Task } from '@/lib/api/tasks';
@@ -159,11 +160,11 @@ export default function TasksPage() {
       case 'URGENT':
         return 'destructive';
       case 'HIGH':
-        return 'default';
+        return 'warning';
       case 'MEDIUM':
-        return 'secondary';
+        return 'indigo';
       case 'LOW':
-        return 'outline';
+        return 'secondary';
       default:
         return 'outline';
     }
@@ -173,13 +174,13 @@ export default function TasksPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'COMPLETED':
-        return 'default';
+        return 'success';
       case 'IN_PROGRESS':
-        return 'secondary';
+        return 'purple';
       case 'IN_REVIEW':
-        return 'default';
+        return 'indigo';
       default:
-        return 'outline';
+        return 'secondary';
     }
   };
 
@@ -576,53 +577,46 @@ export default function TasksPage() {
               animate="visible"
               variants={fadeInUp}
             >
-              <Card className="border-2 border-dashed border-gray-300">
+              <Card className="border-2 border-dashed border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/30">
                 <CardContent className="flex min-h-[300px] flex-col items-center justify-center">
                   <motion.div
-                    className="mb-4 rounded-full bg-gray-100 p-4"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                    className="mb-6 rounded-full bg-gradient-to-br from-primary/10 to-accent/10 p-6"
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
                     transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
                   >
-                    <svg
-                      className="h-12 w-12 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                      />
-                    </svg>
+                    {tasks.length === 0 ? (
+                      <Sparkles className="h-12 w-12 text-primary" />
+                    ) : (
+                      <Search className="h-12 w-12 text-primary" />
+                    )}
                   </motion.div>
-                  <p className="mb-4 text-lg font-medium text-gray-700">
-                    {tasks.length === 0 ? 'No tasks yet' : 'No tasks match your filters'}
-                  </p>
-                  <p className="mb-6 text-sm text-gray-500">
-                    {tasks.length === 0 ? 'Create your first task to get started' : 'Try adjusting your search or filters'}
-                  </p>
+                  <motion.p 
+                    className="mb-2 text-xl font-semibold text-foreground"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    {tasks.length === 0 ? 'Ready to get organized?' : 'No tasks found'}
+                  </motion.p>
+                  <motion.p 
+                    className="mb-8 text-center text-sm text-muted-foreground max-w-sm"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    {tasks.length === 0 
+                      ? "Create your first task and start tracking your work. You've got this!" 
+                      : 'Try adjusting your search or filters to find what you\'re looking for'}
+                  </motion.p>
                   {tasks.length === 0 ? (
                     <motion.div
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
                     >
-                      <Button className="gap-2" onClick={() => setIsCreateOpen(true)}>
-                        <svg
-                          className="h-4 w-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 4v16m8-8H4"
-                          />
-                        </svg>
+                      <Button size="lg" className="gap-2" onClick={() => setIsCreateOpen(true)}>
+                        <Plus className="h-5 w-5" />
                         Create Your First Task
                       </Button>
                     </motion.div>
@@ -648,7 +642,7 @@ export default function TasksPage() {
             >
               {filteredTasks.map((task, index) => (
                 <motion.div key={task.id} variants={scaleIn}>
-                  <Card className="h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden border-l-4" style={{
+                  <Card className="h-full overflow-hidden border-l-4 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" style={{
                     borderLeftColor: task.priority === 'HIGH' ? 'rgb(239, 68, 68)' : task.priority === 'MEDIUM' ? 'rgb(245, 158, 11)' : 'rgb(34, 197, 94)'
                   }}>
                     <CardHeader className="pb-3 bg-gradient-to-r from-purple-50 to-pink-50">

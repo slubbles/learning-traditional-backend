@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuthStore } from "@/store/auth";
 import { toast } from "sonner";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, User, Mail, Lock } from "lucide-react";
 import apiClient from "@/lib/api/client";
 
 interface ChangePasswordData {
@@ -205,28 +205,34 @@ export default function ProfilePage() {
                   <form onSubmit={handleProfileUpdate} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">Full Name</Label>
-                      <Input
-                        id="name"
-                        type="text"
-                        value={profileData.name}
-                        onChange={(e) =>
-                          setProfileData({ ...profileData, name: e.target.value })
-                        }
-                        placeholder="Enter your name"
-                        className="transition-all focus:ring-2 focus:ring-blue-500"
-                      />
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                          id="name"
+                          type="text"
+                          value={profileData.name}
+                          onChange={(e) =>
+                            setProfileData({ ...profileData, name: e.target.value })
+                          }
+                          placeholder="Enter your name"
+                          className="pl-10 transition-all focus:ring-2 focus:ring-primary"
+                        />
+                      </div>
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="email">Email Address</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={profileData.email}
-                        disabled
-                        className="cursor-not-allowed bg-gray-50 opacity-75"
-                      />
-                      <p className="text-xs text-gray-500">Email cannot be changed</p>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                          id="email"
+                          type="email"
+                          value={profileData.email}
+                          disabled
+                          className="cursor-not-allowed bg-muted pl-10 opacity-75"
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground">Email cannot be changed</p>
                     </div>
 
                     <Separator className="my-4" />
@@ -267,6 +273,7 @@ export default function ProfilePage() {
                     <div className="space-y-2">
                       <Label htmlFor="currentPassword">Current Password</Label>
                       <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground z-10" />
                         <Input
                           id="currentPassword"
                           type={showPasswords.current ? "text" : "password"}
@@ -275,7 +282,7 @@ export default function ProfilePage() {
                             setPasswordData({ ...passwordData, currentPassword: e.target.value })
                           }
                           placeholder="Enter current password"
-                          className="pr-10 transition-all focus:ring-2 focus:ring-blue-500"
+                          className="pl-10 pr-10 transition-all focus:ring-2 focus:ring-primary"
                         />
                         <button
                           type="button"
@@ -292,6 +299,7 @@ export default function ProfilePage() {
                     <div className="space-y-2">
                       <Label htmlFor="newPassword">New Password</Label>
                       <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground z-10" />
                         <Input
                           id="newPassword"
                           type={showPasswords.new ? "text" : "password"}
@@ -300,24 +308,25 @@ export default function ProfilePage() {
                             setPasswordData({ ...passwordData, newPassword: e.target.value })
                           }
                           placeholder="Enter new password"
-                          className="pr-10 transition-all focus:ring-2 focus:ring-blue-500"
+                          className="pl-10 pr-10 transition-all focus:ring-2 focus:ring-primary"
                         />
                         <button
                           type="button"
                           onClick={() =>
                             setShowPasswords({ ...showPasswords, new: !showPasswords.new })
                           }
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                         >
                           {showPasswords.new ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                       </div>
-                      <p className="text-xs text-gray-500">Minimum 6 characters</p>
+                      <p className="text-xs text-muted-foreground">Minimum 6 characters</p>
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="confirmPassword">Confirm New Password</Label>
                       <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground z-10" />
                         <Input
                           id="confirmPassword"
                           type={showPasswords.confirm ? "text" : "password"}
@@ -326,14 +335,14 @@ export default function ProfilePage() {
                             setPasswordData({ ...passwordData, confirmPassword: e.target.value })
                           }
                           placeholder="Confirm new password"
-                          className="pr-10 transition-all focus:ring-2 focus:ring-blue-500"
+                          className="pl-10 pr-10 transition-all focus:ring-2 focus:ring-primary"
                         />
                         <button
                           type="button"
                           onClick={() =>
                             setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })
                           }
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                         >
                           {showPasswords.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>

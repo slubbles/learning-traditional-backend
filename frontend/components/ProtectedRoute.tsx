@@ -15,17 +15,20 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, _hasHydrated } = useAuthStore();
 
   useEffect(() => {
+    // Wait for hydration to complete before checking auth
+    if (!_hasHydrated) return;
+    
     // If not authenticated, redirect to login
     if (!isAuthenticated) {
       router.push('/login');
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router, _hasHydrated]);
 
-  // Don't render anything while checking auth
-  if (!isAuthenticated) {
+  // Don't render anything while hydrating or checking auth
+  if (!_hasHydrated || !isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">

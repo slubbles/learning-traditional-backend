@@ -566,19 +566,19 @@ export default function Home() {
               className="flex items-center gap-2"
               whileHover={{ scale: 1.05 }}
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+              <div className="flex h-10 w-10 items-center justify-center">
                 <svg
-                  className="h-5 w-5 text-primary-foreground"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  className="h-10 w-10 text-primary"
+                  viewBox="0 0 800 800"
+                  fill="currentColor"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
+                  <g transform="translate(400,400)">
+                    <path d="M 0,-120 L 30,-90 L 30,-60 L 60,-60 L 90,-30 L 120,0 L 90,30 L 60,60 L 30,60 L 30,90 L 0,120 L -30,90 L -60,90 L -60,60 L -90,30 L -120,0 L -90,-30 L -60,-60 L -30,-60 L -30,-90 Z M 0,-50 A 50,50 0 1,1 0,50 A 50,50 0 1,1 0,-50 Z" fill="currentColor"/>
+                    <path d="M 150,-150 Q 200,-200 250,-150 L 230,-130 L 270,-110 L 240,-80 L 220,-100 Q 180,-140 150,-150 Z" fill="currentColor"/>
+                    <path d="M 250,150 Q 200,200 150,150 L 170,130 L 130,110 L 160,80 L 180,100 Q 220,140 250,150 Z" fill="currentColor"/>
+                    <path d="M -150,150 Q -200,200 -250,150 L -230,130 L -270,110 L -240,80 L -220,100 Q -180,140 -150,150 Z" fill="currentColor"/>
+                    <path d="M -250,-150 Q -200,-200 -150,-150 L -170,-130 L -130,-110 L -160,-80 L -180,-100 Q -220,-140 -250,-150 Z" fill="currentColor"/>
+                  </g>
                 </svg>
               </div>
               <span className="text-xl font-semibold text-foreground">TaskFlow</span>

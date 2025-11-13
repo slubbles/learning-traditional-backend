@@ -131,7 +131,7 @@ export default function Home() {
                   transition={{ type: 'spring', stiffness: 400 }}
                 >
                   <Button size="lg" className="w-full sm:w-auto">
-                    Start Free Trial
+                    Get Started
                     <motion.svg
                       className="ml-2 h-4 w-4"
                       fill="none"
@@ -517,7 +517,7 @@ export default function Home() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button size="lg" variant="secondary" className="bg-card text-foreground hover:bg-muted">
-                  Start Free Trial
+                  Get Started
                 </Button>
               </motion.div>
             </Link>

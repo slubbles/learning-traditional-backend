@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { FolderKanban, Plus, Sparkles } from 'lucide-react';
+import { FolderKanban, Plus, Sparkles, RefreshCw } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -121,15 +121,32 @@ export default function ProjectsPage() {
               <p className="text-sm sm:text-base text-muted-foreground">Manage your team's projects</p>
             </div>
 
-            {canCreateProject && (
-              <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-                <DialogTrigger asChild>
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-full sm:w-auto"
-                  >
-                    <Button className="gap-2 w-full sm:w-auto">
+            <div className="flex gap-3 w-full sm:w-auto">
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex-shrink-0"
+              >
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={loadProjects}
+                  disabled={storeLoading}
+                  title="Refresh projects"
+                >
+                  <RefreshCw className={`h-4 w-4 ${storeLoading ? 'animate-spin' : ''}`} />
+                </Button>
+              </motion.div>
+
+              {canCreateProject && (
+                <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+                  <DialogTrigger asChild>
+                    <motion.div
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex-1 sm:flex-initial"
+                    >
+                      <Button className="gap-2 w-full sm:w-auto">
                       <svg
                         className="h-4 w-4"
                         fill="none"
@@ -144,9 +161,9 @@ export default function ProjectsPage() {
                         />
                       </svg>
                       Create Project
-                    </Button>
-                  </motion.div>
-                </DialogTrigger>
+                      </Button>
+                    </motion.div>
+                  </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Create New Project</DialogTitle>
@@ -225,8 +242,9 @@ export default function ProjectsPage() {
                     </div>
                   </form>
                 </DialogContent>
-              </Dialog>
-            )}
+                </Dialog>
+              )}
+            </div>
           </motion.div>
 
           {/* Projects List */}
